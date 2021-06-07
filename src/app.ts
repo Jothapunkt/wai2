@@ -26,8 +26,6 @@ export const startServer = () => {
             }
         });
 
-        const socketManager = new SocketManager(io);
-
-        resolve({server, port, socketManager});
+        resolve({server, port});
     });
 };
