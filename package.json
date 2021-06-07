@@ -1,0 +1,11 @@
+{
+  "name": "wai2",
+  "version": "1.0.0",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "socket.io": "^3.0.4",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  }
+}
