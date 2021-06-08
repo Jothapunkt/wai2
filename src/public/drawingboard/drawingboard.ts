@@ -84,6 +84,28 @@ function paintEnd(x: number, y: number) {
         draw();
     }
 
+    if (tool === 'line') {
+        const vec = {x: x1 - x0, y: y1 - y0};
+        const vecLength = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+        const normVec = {x: vec.x / vecLength, y: vec.y / vecLength};
+
+        console.log(vec);
+        console.log(vecLength);
+        console.log(normVec);
+
+        let y = y0;
+        let x = x0;
+
+        while (x < x1 && y < y1) {
+            x += normVec.x;
+            y += normVec.y;
+
+            state[Math.floor(x)][Math.floor(y)] = color;
+        }
+
+        draw();
+    }
+
     startCol = undefined;
     startRow = undefined;
 }
