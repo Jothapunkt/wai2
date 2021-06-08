@@ -1,6 +1,10 @@
 {
   "name": "wai2",
   "version": "1.0.0",
+  "scripts": {
+    "start": "tsc && node src/index.js",
+    "build": "tsc"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",

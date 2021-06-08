@@ -15,7 +15,7 @@ export const startServer = () => {
 
         app.use('/', express.static(publicPath));
 
-        const port = process.env.PORT ? process.env.PORT : 5500;
+        const port = process.env.PORT ? process.env.PORT : 7200;
         const server = app.listen(port);
 
         console.log('listening on port', port);

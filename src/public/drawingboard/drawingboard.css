@@ -1,0 +1,12 @@
+#drawingboard {
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: crosshair;
+}
+
+.color-button {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}

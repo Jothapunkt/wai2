@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drawing Board</title>
+    <link rel="stylesheet" href="drawingboard.css"/>
+</head>
+<body>
+    <canvas onmousemove="handleMouseMove(event)" onmousedown="handleMouseDown(event)" width="600" height="600" id="drawingboard"></canvas>
+
+    <div>
+        <div class="color-button" onclick="color = '#000000';" style="background-color: #000000"></div>
+        <div class="color-button" onclick="color = '#880000';" style="background-color: #880000"></div>
+        <div class="color-button" onclick="color = '#008800';" style="background-color: #008800"></div>
+        <div class="color-button" onclick="color = '#000088';" style="background-color: #000088"></div>
+        <div class="color-button" onclick="color = '#ff9900';" style="background-color: #ff9900"></div>
+        <div class="color-button" onclick="color = '#ffffff';" style="background-color: #ffffff"></div>
+    </div>
+
+    <script src="drawingboard.js"></script>
+</body>
+</html>
