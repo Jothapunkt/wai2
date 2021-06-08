@@ -111,24 +111,24 @@ function paintEnd(x: number, y: number) {
 }
 
 function handleMouseUp(event: MouseEvent) {
-    paintEnd(event.x, event.y);
+    paintEnd(event.clientX, event.clientY);
     painting = false;
 }
 
 function handleMouseMove(event: MouseEvent) {
     if (painting) {
-        paint(event.x, event.y);
+        paint(event.clientX, event.clientY);
     }
 }
 
 function handleMouseDown(event: MouseEvent) {
-    const col = Math.round(event.x / scale);
-    const row = Math.round(event.y / scale);
+    const col = Math.round(event.clientX / scale);
+    const row = Math.round(event.clientY / scale);
 
     startCol = col;
     startRow = row;
 
-    paint(event.x, event.y);
+    paint(event.clientX, event.clientY);
     painting = true;
 
     if (tool === 'fill') {
