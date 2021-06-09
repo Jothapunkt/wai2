@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as path from "path";
+import {SocketManager} from "./sockets/SocketManager";
 
 const socketIO = require("socket.io");
 
@@ -25,6 +26,8 @@ export const startServer = () => {
                 origin: '*',
             }
         });
+
+        new SocketManager(io);
 
         resolve({server, port});
     });

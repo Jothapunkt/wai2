@@ -1,4 +1,4 @@
-// Holds pixels (drawn upscaled) to draw on canvas (300x300)
+// Holds pixels (drawn upscaled) to draw on canvas (60x60)
 let state = [];
 
 // Size of the canvas and scale to which the pixels are drawn

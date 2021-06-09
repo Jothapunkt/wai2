@@ -34,6 +34,10 @@ export class SocketManager {
             socket.on('jiff-notepad-patch', (patch: any) => {
                 jiffNotepad.receivePatch(patch);
             });
+
+            socket.on('jiff-drawingboard-patch', (patch: any) => {
+                jiffDrawingBoard.receivePatch(patch);
+            });
         });
     }
 }
