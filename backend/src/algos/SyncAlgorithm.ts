@@ -2,13 +2,15 @@ import {Scenario} from "../scenarios/Scenario";
 
 export class SyncAlgorithm {
     scenario: Scenario;
+    io: any;
 
     // Traffic metrics (in bytes)
     totalInboundTraffic = 0;
     totalOutboundTraffic = 0;
 
-    constructor(scenario: Scenario) {
+    constructor(scenario: Scenario, io: any) {
         this.scenario = scenario;
+        this.io = io;
     }
 
     receiveData(data: any) {

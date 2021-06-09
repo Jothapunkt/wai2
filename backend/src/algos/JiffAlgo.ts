@@ -4,8 +4,8 @@ import {Scenario} from "../scenarios/Scenario";
 const jiff = require("jiff");
 
 export class JiffAlgo extends SyncAlgorithm {
-    constructor(scenario: Scenario) {
-        super(scenario);
+    constructor(scenario: Scenario, io: any) {
+        super(scenario, io);
     }
 
     receivePatch(patch: any) {

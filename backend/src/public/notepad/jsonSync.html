@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notepad (JSON Sync)</title>
+    <link rel="stylesheet" href="notepad.css"/>
+</head>
+<body>
+<label for="notepad">Notepad</label>
+<textarea oninput="window.handleChange(event)" id="notepad"></textarea>
+<script src="notepad.js"></script>
+<script src="https://unpkg.com/socket.io-client@3.1.3/dist/socket.io.min.js"></script>
+<script src="https://wzrd.in/standalone/diffsync"></script>
+<script src="../algos/jsonSync.js"></script>
+</body>
+</html>

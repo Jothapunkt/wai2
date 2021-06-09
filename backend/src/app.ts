@@ -27,6 +27,7 @@ export const startServer = () => {
             }
         });
 
+        // Set up socket events
         new SocketManager(io);
 
         resolve({server, port});

@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src/**/*.ts"
+    "backend/src/**/*.ts"
   ],
   "exclude": [
     "node_modules"

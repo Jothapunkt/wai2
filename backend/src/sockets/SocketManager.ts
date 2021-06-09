@@ -2,6 +2,7 @@ import {Socket} from "socket.io";
 import {JiffAlgo} from "../algos/JiffAlgo";
 import {Notepad} from "../scenarios/notepad/Notepad";
 import {DrawingBoard} from "../scenarios/drawingboard/DrawingBoard";
+import {JsonSyncAlgo} from "../algos/JsonSyncAlgo";
 
 export class SocketManager {
     // SocketIO instance
@@ -21,8 +22,11 @@ export class SocketManager {
     constructor(io) {
         this.io = io;
 
-        const jiffNotepad = new JiffAlgo(new Notepad());
-        const jiffDrawingBoard = new JiffAlgo(new DrawingBoard());
+        const jiffNotepad = new JiffAlgo(new Notepad(), io);
+        const jiffDrawingBoard = new JiffAlgo(new DrawingBoard(), io);
+
+        const jsyncNotepad = new JsonSyncAlgo(new Notepad(), io);
+        const jsyncDrawingboard = new JsonSyncAlgo(new DrawingBoard(), io);
 
         io.on('connect' , (socket: Socket) => {
             this.connect(socket);
