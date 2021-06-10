@@ -1,5 +1,4 @@
 import {SyncAlgo} from "./SyncAlgo";
-import {diffsyncDrawID} from "../data/dataIDs";
 const dsync = require('diffsync');
 const dsyncClient = dsync.Client;
 const socketIO = require("socket.io-client");
@@ -9,9 +8,9 @@ export class DiffSync extends SyncAlgo {
     client: any;
     data: any;
 
-    constructor() {
+    constructor(drawID: string) {
         super();
-        this.client = new dsyncClient(this.socket, diffsyncDrawID);
+        this.client = new dsyncClient(this.socket, drawID);
 
         this.client.on('connected', () => {
             console.log('connected');

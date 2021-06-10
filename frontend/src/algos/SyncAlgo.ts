@@ -5,20 +5,18 @@ export class SyncAlgo {
         this.updateHandlers.push(handler);
     }
 
-    patch(oldData: any, patch: any): any {
-
-    }
-
     removeUpdateHandler(handler: (data: any) => void): void {
         this.updateHandlers = this.updateHandlers.filter(updateHandler => updateHandler !== handler);
     }
 
+    // A new state was received from server
     fireUpdateHandlers(data: any): void {
         for (let handler of this.updateHandlers) {
             handler(data);
         }
     }
 
+    // Own client changed state
     pushUpdate(newState: any) {
 
     }

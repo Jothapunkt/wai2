@@ -176,8 +176,10 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
     }
 
     function handleUpdate(newData: any) {
-        state.pixels = newData;
-        draw();
+        if (newData.length === size) {
+            state.pixels = newData;
+            draw();
+        }
     }
 
     function handleMouseDown(event: any) {

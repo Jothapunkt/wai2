@@ -1,15 +1,16 @@
 class MetricsCollection {
-    diffsync: {
+    // Total amount of traffic sent by parties (in bytes)
+    diffsync = {
         clientsSent: 0,
         serverSent: 0
     };
 
-    jiff: {
+    jiff =  {
         clientsSent: 0,
         serverSent: 0
     };
 
-    raw: {
+    raw = {
         total: 0
     }
 
@@ -22,4 +23,10 @@ class MetricsCollection {
 
         this.raw.total = 0;
     }
+}
+
+const metricsCollection = new MetricsCollection();
+
+export const getMetricsCollection = (): MetricsCollection => {
+    return metricsCollection;
 }

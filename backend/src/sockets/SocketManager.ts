@@ -2,7 +2,9 @@ import {Socket} from "socket.io";
 import {JiffAlgo} from "../algos/JiffAlgo";
 import {Notepad} from "../scenarios/notepad/Notepad";
 import {DrawingBoard} from "../scenarios/drawingboard/DrawingBoard";
-import {JsonSyncAlgo} from "../algos/JsonSyncAlgo";
+import {DiffSyncAlgo} from "../algos/DiffSyncAlgo";
+import {getMetricsCollection} from "../metrics/MetricsCollection";
+import {diffsyncDrawID, diffsyncNotepadID} from "../data/dataIDs";
 
 export class SocketManager {
     // SocketIO instance
@@ -25,23 +27,47 @@ export class SocketManager {
         const jiffNotepad = new JiffAlgo(new Notepad(), io);
         const jiffDrawingBoard = new JiffAlgo(new DrawingBoard(), io);
 
-        const jsyncNotepad = new JsonSyncAlgo(new Notepad(), io);
-        const jsyncDrawingboard = new JsonSyncAlgo(new DrawingBoard(), io);
+        const jsyncNotepad = new DiffSyncAlgo(new Notepad(), io, diffsyncNotepadID);
+        const jsyncDrawingboard = new DiffSyncAlgo(new DrawingBoard(), io, diffsyncDrawID);
 
         io.on('connect' , (socket: Socket) => {
             this.connect(socket);
-            socket.onAny(console.log);
+            // socket.onAny(console.log);
 
             socket.on('disconnect', () => {
                 this.disconnect(socket);
             });
 
-            socket.on('jiff-notepad-patch', (patch: any) => {
-                jiffNotepad.receivePatch(patch);
+            socket.on('jiff-patch', (patch: any) => {
+                if (patch.scenario === 'drawingboard') {
+                    jiffDrawingBoard.receivePatch(patch.patch);
+                }
+
+                if (patch.scenario === 'notepad') {
+                    jiffNotepad.receivePatch(patch.patch);
+                }
+
+                const patchLength = JSON.stringify(patch).length;
+                getMetricsCollection().jiff.clientsSent += patchLength;
+
+                this.connections.forEach(conn => {
+                    if (conn === socket) {
+                        return;
+                    }
+
+                    getMetricsCollection().jiff.serverSent += patchLength;
+                    conn.emit('jiff-patch', patch);
+                }, patch);
             });
 
-            socket.on('jiff-drawingboard-patch', (patch: any) => {
-                jiffDrawingBoard.receivePatch(patch);
+            socket.on('jiff-request', ({scenario}) => {
+                if (scenario === 'drawingboard') {
+                    socket.emit('jiff-initial-state', jiffDrawingBoard.scenario.state);
+                }
+
+                if (scenario === 'notepad') {
+                    socket.emit('jiff-initial-state', jiffNotepad.scenario.state);
+                }
             });
         });
     }

@@ -3,13 +3,24 @@ import {BrowserRouter as Router, Redirect, Route, Switch, useLocation} from "rea
 import {DrawingBoard} from "../drawingboard/DrawingBoard";
 import {RouteButton} from "./RouteButton";
 import {DiffSync} from "../algos/DiffSync";
+import {Notepad} from "../notepad/Notepad";
+import {JiffAlgo} from "../algos/JiffAlgo";
+import {diffsyncDrawID} from "../data/dataIDs";
 
 export const Routing: React.FC = (): JSX.Element => {
     return <Router>
         <Switch>
-            <Route path="/drawingboard" render={() => <DrawingBoard algo={new DiffSync()}/>}/>
+            <Route path="/drawingboard/diffsync" render={() => <DrawingBoard algo={new DiffSync(diffsyncDrawID)}/>}/>
+            <Route path="/drawingboard/jiff" render={() => <DrawingBoard algo={new JiffAlgo('drawingboard')}/>}/>
+
+            <Route path="/notepad/diffsync" render={() => <Notepad algo={new DiffSync(diffsyncDrawID)}/>}/>
+            <Route path="/notepad/jiff" render={() => <Notepad algo={new JiffAlgo('notepad')}/>}/>
+
             <Route path="/">
-                <RouteButton route='/drawingboard'>Drawingboard</RouteButton>
+                <RouteButton route='/drawingboard/diffsync'>Drawingboard (diffsync)</RouteButton>
+                <RouteButton route='/drawingboard/jiff'>Drawingboard (Jiff)</RouteButton>
+                <RouteButton route='/notepad/diffsync'>Notepad (diffsync)</RouteButton>
+                <RouteButton route='/notepad/jiff'>Notepad (Jiff)</RouteButton>
             </Route>
         </Switch>
     </Router>;
