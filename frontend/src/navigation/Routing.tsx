@@ -5,7 +5,7 @@ import {RouteButton} from "./RouteButton";
 import {DiffSync} from "../algos/DiffSync";
 import {Notepad} from "../notepad/Notepad";
 import {JiffAlgo} from "../algos/JiffAlgo";
-import {diffsyncDrawID} from "../data/dataIDs";
+import {diffsyncDrawID, diffsyncNotepadID} from "../data/dataIDs";
 
 export const Routing: React.FC = (): JSX.Element => {
     return <Router>
@@ -13,7 +13,7 @@ export const Routing: React.FC = (): JSX.Element => {
             <Route exact path="/drawingboard/diffsync" render={() => <DrawingBoard algo={new DiffSync(diffsyncDrawID)}/>}/>
             <Route exact path="/drawingboard/jiff" render={() => <DrawingBoard algo={new JiffAlgo('drawingboard')}/>}/>
 
-            <Route exact path="/notepad/diffsync" render={() => <Notepad algo={new DiffSync(diffsyncDrawID)}/>}/>
+            <Route exact path="/notepad/diffsync" render={() => <Notepad algo={new DiffSync(diffsyncNotepadID)}/>}/>
             <Route exact path="/notepad/jiff" render={() => <Notepad algo={new JiffAlgo('notepad')}/>}/>
 
             <Route path="/">
