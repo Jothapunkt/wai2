@@ -30,6 +30,7 @@ export class SocketManager {
 
         io.on('connect' , (socket: Socket) => {
             this.connect(socket);
+            socket.onAny(console.log);
 
             socket.on('disconnect', () => {
                 this.disconnect(socket);

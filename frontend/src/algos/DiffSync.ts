@@ -20,9 +20,19 @@ export class DiffSync extends SyncAlgo {
 
         this.client.on('synced', () => {
             console.log('sync call');
-            this.fireUpdateHandlers(this.data);
+            this.fireUpdateHandlers(this.data.state);
         });
 
         this.client.initialize();
+    }
+
+    pushUpdate(newState: any) {
+        console.log('pushUpdate');
+        if (!this.data) {
+            return;
+        }
+
+        this.data.state = newState;
+        this.client.sync();
     }
 }

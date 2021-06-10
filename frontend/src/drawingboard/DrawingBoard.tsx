@@ -52,9 +52,11 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
         return {x: posX, y: posY};
     }
 
-    function draw() {
+    function push() {
         props.algo.pushUpdate(state.pixels);
+    }
 
+    function draw() {
         if (!canvas.current) {
             console.log('No canvas');
             return;
@@ -98,6 +100,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
         if (tool === 'pen') {
             state.pixels[x][y] = color;
             draw();
+            push();
         }
     }
 
@@ -122,6 +125,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
             }
 
             draw();
+            push();
         }
 
         if (tool === 'line') {
@@ -148,6 +152,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
             }
 
             draw();
+            push();
         }
 
         setStartY(undefined);
@@ -168,6 +173,11 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
         }
     }
 
+    function handleUpdate(newData: any) {
+        state.pixels = newData;
+        draw();
+    }
+
     function handleMouseDown(event: any) {
         const {x, y} = getCanvasPosition(event);
 
@@ -180,6 +190,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
         if (tool === 'fill') {
             fill(state.pixels[x][y], x, y);
             draw();
+            push();
         }
     }
 
@@ -206,8 +217,12 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
     useEffect(() => {
         window.addEventListener("mouseup", handleMouseUp);
+        props.algo.setUpdateHandler(handleUpdate);
 
-        return () => window.removeEventListener("mouseup", handleMouseUp);
+        return () => {
+            window.removeEventListener("mouseup", handleMouseUp);
+            props.algo.removeUpdateHandler(handleUpdate);
+        }
     });
 
     useEffect(() => {
@@ -230,7 +245,10 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
             <div className={tool === 'rect' ? "tool-button active" : "tool-button"} onClick={() => setTool("rect")}>Rectangle</div>
             <div className={tool === 'line' ? "tool-button active" : "tool-button"} onClick={() => setTool("line")}>Line</div>
             <div className={tool === 'fill' ? "tool-button active" : "tool-button"} onClick={() => setTool("fill")}>Fill</div>
-            <div className="tool-button" onClick={clear}>Clear</div>
+            <div className="tool-button" onClick={() => {
+                clear();
+                push();
+            }}>Clear</div>
         </div>
 
         <div style={{height: "1em"}}/>
