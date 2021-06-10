@@ -5,7 +5,7 @@ const dsyncClient = dsync.Client;
 const socketIO = require("socket.io-client");
 
 export class DiffSync extends SyncAlgo {
-    socket = socketIO();
+    socket = socketIO('http://localhost:7200');
     client: any;
     data: any;
 
@@ -14,11 +14,13 @@ export class DiffSync extends SyncAlgo {
         this.client = new dsyncClient(this.socket, diffsyncDrawID);
 
         this.client.on('connected', () => {
+            console.log('connected');
             this.data = this.client.getData();
         });
 
         this.client.on('synced', () => {
-
+            console.log('sync call');
+            this.fireUpdateHandlers(this.data);
         });
 
         this.client.initialize();
