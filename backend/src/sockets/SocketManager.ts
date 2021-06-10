@@ -12,12 +12,10 @@ export class SocketManager {
     connections: Socket[] = [];
 
     connect(socket: Socket) {
-        console.log('connected');
         this.connections.push(socket);
     }
 
     disconnect(socket: Socket) {
-        console.log('disconnected')
         this.connections = this.connections.filter(connection => connection !== socket);
     }
 

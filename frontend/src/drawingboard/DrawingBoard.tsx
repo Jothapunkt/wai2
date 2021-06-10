@@ -176,6 +176,10 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
     }
 
     function handleUpdate(newData: any) {
+        if (!newData) {
+            return;
+        }
+
         if (newData.length === size) {
             state.pixels = newData;
             draw();

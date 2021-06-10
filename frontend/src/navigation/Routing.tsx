@@ -10,11 +10,11 @@ import {diffsyncDrawID} from "../data/dataIDs";
 export const Routing: React.FC = (): JSX.Element => {
     return <Router>
         <Switch>
-            <Route path="/drawingboard/diffsync" render={() => <DrawingBoard algo={new DiffSync(diffsyncDrawID)}/>}/>
-            <Route path="/drawingboard/jiff" render={() => <DrawingBoard algo={new JiffAlgo('drawingboard')}/>}/>
+            <Route exact path="/drawingboard/diffsync" render={() => <DrawingBoard algo={new DiffSync(diffsyncDrawID)}/>}/>
+            <Route exact path="/drawingboard/jiff" render={() => <DrawingBoard algo={new JiffAlgo('drawingboard')}/>}/>
 
-            <Route path="/notepad/diffsync" render={() => <Notepad algo={new DiffSync(diffsyncDrawID)}/>}/>
-            <Route path="/notepad/jiff" render={() => <Notepad algo={new JiffAlgo('notepad')}/>}/>
+            <Route exact path="/notepad/diffsync" render={() => <Notepad algo={new DiffSync(diffsyncDrawID)}/>}/>
+            <Route exact path="/notepad/jiff" render={() => <Notepad algo={new JiffAlgo('notepad')}/>}/>
 
             <Route path="/">
                 <RouteButton route='/drawingboard/diffsync'>Drawingboard (diffsync)</RouteButton>

@@ -45,4 +45,4 @@ if __name__ == '__main__':
         canvas = driver.find_element_by_id("drawingboard")
         webdriver.ActionChains(driver).click_and_hold(canvas).move_by_offset(200,
                                                                              200).release().perform()
-        driver.quit()
+        #driver.quit()

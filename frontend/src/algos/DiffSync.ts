@@ -13,13 +13,11 @@ export class DiffSync extends SyncAlgo {
         this.client = new dsyncClient(this.socket, drawID);
 
         this.client.on('connected', () => {
-            console.log('connected');
             this.data = this.client.getData();
             this.fireUpdateHandlers(this.data.state);
         });
 
         this.client.on('synced', () => {
-            console.log('sync call');
             this.fireUpdateHandlers(this.data.state);
         });
 
@@ -27,7 +25,6 @@ export class DiffSync extends SyncAlgo {
     }
 
     pushUpdate(newState: any) {
-        console.log('pushUpdate');
         if (!this.data) {
             return;
         }
