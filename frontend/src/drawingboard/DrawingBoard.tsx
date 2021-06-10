@@ -1,8 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./drawingboard.css";
+import {SyncAlgo} from "../algos/SyncAlgo";
 
 interface DrawingBoardProps {
-
+    algo: SyncAlgo
 }
 
 export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardProps) => {
@@ -52,6 +53,8 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
     }
 
     function draw() {
+        props.algo.pushUpdate(state.pixels);
+
         if (!canvas.current) {
             console.log('No canvas');
             return;

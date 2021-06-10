@@ -1,21 +1,25 @@
 export class SyncAlgo {
     updateHandlers: ((data: any) => void)[] = [];
 
-    setUpdateHandler(handler: (data: any) => void) {
+    setUpdateHandler(handler: (data: any) => void): void {
         this.updateHandlers.push(handler);
     }
 
-    removeUpdateHandler(handler: (data: any) => void) {
+    patch(oldData: any, patch: any): any {
+
+    }
+
+    removeUpdateHandler(handler: (data: any) => void): void {
         this.updateHandlers = this.updateHandlers.filter(updateHandler => updateHandler !== handler);
     }
 
-    fireUpdateHandlers(data: any) {
+    fireUpdateHandlers(data: any): void {
         for (let handler of this.updateHandlers) {
             handler(data);
         }
     }
 
-    notifyUpdate(newState: any) {
+    pushUpdate(newState: any) {
 
     }
 }
