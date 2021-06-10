@@ -9,10 +9,9 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "backend/src/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
-    //
   ]
 }
