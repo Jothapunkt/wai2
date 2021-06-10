@@ -16,6 +16,7 @@ export class DiffSync extends SyncAlgo {
         this.client.on('connected', () => {
             console.log('connected');
             this.data = this.client.getData();
+            this.fireUpdateHandlers(this.data.state);
         });
 
         this.client.on('synced', () => {

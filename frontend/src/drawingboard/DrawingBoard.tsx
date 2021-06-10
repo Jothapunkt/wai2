@@ -109,15 +109,17 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
             return;
         }
 
-        const x0 = Math.min(x, startY);
-        let x1 = Math.max(x, startY);
+        const x0 = Math.min(x, startX);
+        let x1 = Math.max(x, startX);
         x1 = Math.min(x1, size - 1);
 
-        const y0 = Math.min(y, startX);
-        let y1 = Math.max(y, startX);
+        const y0 = Math.min(y, startY);
+        let y1 = Math.max(y, startY);
         y1 = Math.min(y1, size - 1);
 
         if (tool === 'rect') {
+            console.log('from', x0, y0, 'to', x1, y1);
+
             for (let x = x0; x < x1; ++x) {
                 for (let y = y0; y < y1; ++y) {
                     state.pixels[x][y] = color;
