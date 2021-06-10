@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.route-button {
+  padding: 1em;
+  border-radius: 5px;
+  background-color: #282c34;
+  color: white;
+  transition: 0.5s;
+  margin: 1em;
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+}
+
+.route-button:hover {
+  background-color: #373d48;
+}
+

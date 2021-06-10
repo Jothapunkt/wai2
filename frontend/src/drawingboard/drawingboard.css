@@ -9,6 +9,12 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
+    transition: 0.5s;
+}
+
+.color-button.active {
+    width: 40px;
+    height: 40px;
 }
 
 .tool-button {
@@ -18,4 +24,8 @@
     color: white;
     cursor: pointer;
     user-select: none;
+}
+
+.tool-button.active {
+    background-color: mediumpurple;
 }

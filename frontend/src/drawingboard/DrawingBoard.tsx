@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
+import "./drawingboard.css";
 
 interface DrawingBoardProps {
 
@@ -6,7 +7,7 @@ interface DrawingBoardProps {
 
 export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardProps) => {
     // Holds pixels (drawn upscaled) to draw on canvas (60x60)
-    let state: any = [];
+    const [state, setState] = useState<{pixels: string[][]}>({pixels: []});
 
     // Canvas element
     const canvas = useRef<HTMLCanvasElement>(null);
@@ -20,29 +21,54 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
     const [color, setColor] = useState('#ff9900');
 
     // Coordinates the current draw action started at
-    const [startCol, setStartCol] = useState<number | undefined>(0);
-    const [startRow, setStartRow] = useState<number | undefined>(0);
+    const [startY, setStartY] = useState<number | undefined>(0);
+    const [startX, setStartX] = useState<number | undefined>(0);
 
     // Whether the mouse is currently down on the canvas
     const [painting, setPainting] = useState(false);
 
+    function getCanvasPosition(event: any): {x: number, y: number} {
+        const x = event.clientX;
+        const y = event.clientY;
+
+        if (!canvas.current) {
+            return {x: 0, y: 0};
+        }
+
+        const bbox = canvas.current.getBoundingClientRect();
+        const dx = x - bbox.x;
+        const dy = y - bbox.y;
+
+        const scaledX = Math.round(dx / scale);
+        const scaledY = Math.round(dy / scale);
+
+        let posX = Math.max(scaledX, 0);
+        posX = Math.min(posX, size - 1);
+
+        let posY = Math.max(scaledY, 0);
+        posY = Math.min(posY, size - 1);
+
+        return {x: posX, y: posY};
+    }
+
     function draw() {
         if (!canvas.current) {
+            console.log('No canvas');
             return;
         }
 
         const ctx = canvas.current.getContext("2d");
 
         if (!ctx) {
+            console.log('No ctx');
             return;
         }
 
-        ctx.scale(scale, scale);
-
         ctx.clearRect(0, 0, size, size);
+
         for (let row = 0; row < size; ++row) {
             for (let col = 0; col < size; ++col) {
-                ctx.fillStyle = state[col][row];
+                ctx.fillStyle = state.pixels[col][row];
 
                 ctx.fillRect(col , row, 1, 1);
             }
@@ -51,7 +77,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
     function clear() {
         // Populate with gray
-        state = [];
+        state.pixels = [];
         for (let i = 0; i < size; ++i) {
             const row = [];
 
@@ -59,7 +85,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
                 row.push('#666666');
             }
 
-            state.push(row);
+            state.pixels.push(row);
         }
 
         draw();
@@ -67,34 +93,28 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
     function paint(x: number, y: number) {
         if (tool === 'pen') {
-            const col = Math.min(Math.round(x / scale), size);
-            const row = Math.min(Math.round(y / scale), size);
-
-            state[col][row] = color;
+            state.pixels[x][y] = color;
             draw();
         }
     }
 
-    function paintEnd(x: number, y: number) {
-        if (!startCol || !startRow) {
+    const paintEnd = (x: number, y: number) => {
+        if (!startY || !startX) {
             return;
         }
 
-        const col = Math.round(x / scale);
-        const row = Math.round(y / scale);
+        const x0 = Math.min(x, startY);
+        let x1 = Math.max(x, startY);
+        x1 = Math.min(x1, size - 1);
 
-        const x0 = Math.min(col, startCol);
-        let x1 = Math.max(col, startCol);
-        x1 = Math.min(x1, size);
-
-        const y0 = Math.min(row, startRow);
-        let y1 = Math.max(row, startRow);
-        y1 = Math.min(y1, size);
+        const y0 = Math.min(y, startX);
+        let y1 = Math.max(y, startX);
+        y1 = Math.min(y1, size - 1);
 
         if (tool === 'rect') {
             for (let x = x0; x < x1; ++x) {
                 for (let y = y0; y < y1; ++y) {
-                    state[x][y] = color;
+                    state.pixels[x][y] = color;
                 }
             }
 
@@ -102,54 +122,60 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
         }
 
         if (tool === 'line') {
-            const vec = {x: x1 - x0, y: y1 - y0};
+            const vec = {x: x - startX, y: y - startY};
             const vecLength = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
             const normVec = {x: vec.x / vecLength, y: vec.y / vecLength};
 
-            console.log(vec);
-            console.log(vecLength);
-            console.log(normVec);
+            let xi = 0;
+            let yi = 0;
 
-            let y = y0;
-            let x = x0;
+            for (let i = 0; i < vecLength; i++) {
+                xi += normVec.x;
+                yi += normVec.y;
 
-            while (x < x1 && y < y1) {
-                x += normVec.x;
-                y += normVec.y;
+                let pixelX = Math.round(startX + xi);
+                pixelX = Math.max(pixelX, 0);
+                pixelX = Math.min(pixelX, size - 1);
 
-                state[Math.floor(x)][Math.floor(y)] = color;
+                let pixelY = Math.round(startY + yi);
+                pixelY = Math.max(pixelY, 0);
+                pixelY = Math.min(pixelY, size - 1);
+
+                state.pixels[pixelX][pixelY] = color;
             }
 
             draw();
         }
 
-        setStartCol(undefined);
-        setStartRow(undefined);
+        setStartY(undefined);
+        setStartX(undefined);
     }
 
     function handleMouseUp(event: any) {
-        paintEnd(event.clientX, event.clientY);
+        const {x, y} = getCanvasPosition(event);
+        paintEnd(x, y);
         setPainting(false);
     }
 
     function handleMouseMove(event: any) {
+        const {x, y} = getCanvasPosition(event);
+
         if (painting) {
-            paint(event.clientX, event.clientY);
+            paint(x, y);
         }
     }
 
     function handleMouseDown(event: any) {
-        const col = Math.round(event.clientX / scale);
-        const row = Math.round(event.clientY / scale);
+        const {x, y} = getCanvasPosition(event);
 
-        setStartCol(col);
-        setStartRow(row);
+        setStartX(x);
+        setStartY(y);
 
-        paint(event.clientX, event.clientY);
+        paint(x, y);
         setPainting(true);
 
         if (tool === 'fill') {
-            fill(state[col][row], col, row);
+            fill(state.pixels[x][y], x, y);
             draw();
         }
     }
@@ -163,8 +189,8 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
             return;
         }
 
-        if (state[x][y] === oldColor) {
-            state[x][y] = color;
+        if (state.pixels[x][y] === oldColor) {
+            state.pixels[x][y] = color;
 
             fill(oldColor, x - 1, y);
             fill(oldColor, x, y - 1);
@@ -175,25 +201,44 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
     useEffect(clear, []);
 
-    return <div>
-        <canvas onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} width="600" height="600"
-    id="drawingboard"/>
+    useEffect(() => {
+        window.addEventListener("mouseup", handleMouseUp);
 
+        return () => window.removeEventListener("mouseup", handleMouseUp);
+    });
+
+    useEffect(() => {
+        if (canvas.current) {
+            const context = canvas.current.getContext("2d");
+
+            if (context) {
+                context.resetTransform();
+                context.scale(scale, scale);
+                draw();
+            }
+        }
+    }, [canvas.current]);
+
+    return <div>
+        <canvas ref={canvas} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} width="600" height="600"
+    id="drawingboard"/>
         <div>
-            <div className="color-button" onClick={() => setColor('#000000')} style={{backgroundColor: "#000000"}}/>
-            <div className="color-button" onClick={() => setColor('#880000')} style={{backgroundColor: "#880000"}}/>
-            <div className="color-button" onClick={() => setColor('#008800')} style={{backgroundColor: "#008800"}}/>
-            <div className="color-button" onClick={() => setColor('#000088')} style={{backgroundColor: "#000088"}}/>
-            <div className="color-button" onClick={() => setColor('#ff9900')} style={{backgroundColor: "#ff9900"}}/>
-            <div className="color-button" onClick={() => setColor('#ffffff')} style={{backgroundColor: "#ffffff"}}/>
+            <div className={tool === 'pen' ? "tool-button active" : "tool-button"} onClick={() => setTool("pen")}>Pen</div>
+            <div className={tool === 'rect' ? "tool-button active" : "tool-button"} onClick={() => setTool("rect")}>Rectangle</div>
+            <div className={tool === 'line' ? "tool-button active" : "tool-button"} onClick={() => setTool("line")}>Line</div>
+            <div className={tool === 'fill' ? "tool-button active" : "tool-button"} onClick={() => setTool("fill")}>Fill</div>
+            <div className="tool-button" onClick={clear}>Clear</div>
         </div>
 
+        <div style={{height: "1em"}}/>
+
         <div>
-            <div className="tool-button" onClick={() => setTool("pen")}>Pen</div>
-            <div className="tool-button" onClick={() => setTool("rect")}>Rectangle</div>
-            <div className="tool-button" onClick={() => setTool("line")}>Line</div>
-            <div className="tool-button" onClick={() => setTool("fill")}>Fill</div>
-            <div className="tool-button" onClick={clear}>Clear</div>
+            <div className={color === "#000000" ? "color-button active" : "color-button"} onClick={() => setColor('#000000')} style={{backgroundColor: "#000000"}}/>
+            <div className={color === "#880000" ? "color-button active" : "color-button"} onClick={() => setColor('#880000')} style={{backgroundColor: "#880000"}}/>
+            <div className={color === "#008800" ? "color-button active" : "color-button"} onClick={() => setColor('#008800')} style={{backgroundColor: "#008800"}}/>
+            <div className={color === "#000088" ? "color-button active" : "color-button"} onClick={() => setColor('#000088')} style={{backgroundColor: "#000088"}}/>
+            <div className={color === "#ff9900" ? "color-button active" : "color-button"} onClick={() => setColor('#ff9900')} style={{backgroundColor: "#ff9900"}}/>
+            <div className={color === "#ffffff" ? "color-button active" : "color-button"} onClick={() => setColor('#ffffff')} style={{backgroundColor: "#ffffff"}}/>
         </div>
     </div>;
 }
