@@ -8,6 +8,32 @@
 <body>
 <label for="notepad">Notepad</label>
 <textarea oninput="window.handleChange(event)" id="notepad"></textarea>
-  <script src="notepad.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  let text = '';
+  let textarea = document.getElementById('notepad') ;
+
+  function handleChange(event) {
+      text = textarea.value;
+      console.log(text);
+      socket.emit('jiff-notepad-patch', text)
+  };
+
+  socket.on('jiff-nodepad-patch', message => {
+      console.log(message);
+  });
+
+  socket.on('state', message => {
+    console.log("Setting State");
+    textarea.value = message;
+  });
+
+  socket.on('message', message => {
+    console.log(message);
+})
+
+</script>
+<script src="./notepad.js"></script>
 </body>
 </html>

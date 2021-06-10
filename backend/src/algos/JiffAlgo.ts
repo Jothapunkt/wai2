@@ -10,7 +10,8 @@ export class JiffAlgo extends SyncAlgorithm {
 
     receivePatch(patch: any) {
         try {
-            const patched = jiff.patch(patch, this.scenario.state);
+            var diff = jiff.diff(this.scenario.state, patch)
+            const patched = jiff.patch(patch, diff);
             this.scenario.state = patched;
         } catch (e) {
             console.log(e);

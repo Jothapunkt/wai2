@@ -8,9 +8,12 @@ export class SocketManager {
     // SocketIO instance
     io;
     connections: Socket[] = [];
+    content: String[] = [];
 
     connect(socket: Socket) {
         console.log('connected');
+        socket.emit('message', 'Welcome to ChatCord!');
+        socket.emit("state", this.content);
         this.connections.push(socket);
     }
 
@@ -36,6 +39,7 @@ export class SocketManager {
             });
 
             socket.on('jiff-notepad-patch', (patch: any) => {
+                console.log("Received Patch " + patch)
                 jiffNotepad.receivePatch(patch);
             });
 
