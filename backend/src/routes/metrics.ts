@@ -3,7 +3,7 @@ import {getMetricsCollection} from "../metrics/MetricsCollection";
 
 export const metricsRouter = express.Router();
 
-metricsRouter.get('/', (response, resolve) => {
+metricsRouter.get('/', (request, response) => {
     const collection = getMetricsCollection();
     response.send({
         jiff: collection.jiff,
@@ -12,7 +12,7 @@ metricsRouter.get('/', (response, resolve) => {
     });
 });
 
-metricsRouter.post('/reset', (response, resolve) => {
+metricsRouter.post('/clear', (request, response) => {
     getMetricsCollection().reset();
     response.send('ok');
 });
