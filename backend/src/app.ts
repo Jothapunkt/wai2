@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as path from "path";
 import {SocketManager} from "./sockets/SocketManager";
+import {metricsRouter} from "./routes/metrics";
 
 const socketIO = require("socket.io");
 
@@ -15,6 +16,7 @@ export const startServer = () => {
         const publicPath = path.resolve(path.join(__dirname, 'public'));
 
         app.use('/', express.static(publicPath));
+        app.use('/metrics', metricsRouter);
 
         const port = process.env.PORT ? process.env.PORT : 7200;
         const server = app.listen(port);

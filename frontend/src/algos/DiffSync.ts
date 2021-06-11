@@ -1,10 +1,8 @@
 import {SyncAlgo} from "./SyncAlgo";
 const dsync = require('diffsync');
 const dsyncClient = dsync.Client;
-const socketIO = require("socket.io-client");
 
 export class DiffSync extends SyncAlgo {
-    socket = socketIO('http://localhost:7200');
     client: any;
     data: any;
 
@@ -25,6 +23,7 @@ export class DiffSync extends SyncAlgo {
     }
 
     pushUpdate(newState: any) {
+        super.pushUpdate(newState);
         if (!this.data) {
             return;
         }

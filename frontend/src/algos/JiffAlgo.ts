@@ -1,10 +1,8 @@
 import {SyncAlgo} from "./SyncAlgo";
 
-const socketIO = require("socket.io-client");
 const jiff = require('jiff');
 
 export class JiffAlgo extends SyncAlgo {
-    socket = socketIO('http://localhost:7200');
     lastState = undefined;
     scenario;
 
@@ -39,6 +37,8 @@ export class JiffAlgo extends SyncAlgo {
     }
 
     pushUpdate(newState: any) {
+        super.pushUpdate(newState);
+
         // Calculate difference
         const patch = jiff.diff(this.lastState, newState);
         /*console.log(this.lastState);

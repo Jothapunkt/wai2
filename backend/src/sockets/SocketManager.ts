@@ -36,6 +36,10 @@ export class SocketManager {
                 this.disconnect(socket);
             });
 
+            socket.on('raw', ({length}) => {
+                getMetricsCollection().raw.total += length;
+            });
+
             socket.on('jiff-patch', (patch: any) => {
                 if (patch.scenario === 'drawingboard') {
                     jiffDrawingBoard.receivePatch(patch.patch);

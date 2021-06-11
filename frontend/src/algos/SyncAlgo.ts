@@ -1,4 +1,7 @@
+const socketIO = require("socket.io-client");
+
 export class SyncAlgo {
+    socket = socketIO('http://localhost:7200');
     updateHandlers: ((data: any) => void)[] = [];
 
     setUpdateHandler(handler: (data: any) => void): void {
@@ -18,6 +21,8 @@ export class SyncAlgo {
 
     // Own client changed state
     pushUpdate(newState: any) {
-
+        // Report amount of raw data
+        const rawLength = JSON.stringify(newState).length;
+        this.socket.emit("raw", {length: rawLength});
     }
 }
