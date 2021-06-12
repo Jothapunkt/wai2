@@ -65,11 +65,25 @@ export const MetricsDashboard: React.FC = (props) => {
 
     const diffsyncTotal = diffsyncClient + diffsyncServer;
 
+    const highestTotal = Math.max(jiffTotal, diffsyncTotal, raw, 1);
+
+    let jsonDisplay = JSON.stringify(metrics, (key, value) => {
+        console.log(key, value);
+        if (typeof value === 'number') {
+            return format(value);
+        } else {
+            return value;
+        }
+    }, 4);
+
+    jsonDisplay = jsonDisplay.replaceAll(': {', ': {');
+
     return <div>
-        <div>
-            <StatColumn color={'#990099'} filledPercent={(diffsyncTotal / raw) * 100} label={"Diffsync (Total): " + format(diffsyncTotal)}/>
-            <StatColumn color={'#009933'} filledPercent={(jiffTotal / raw) * 100} label={"Jiff (Total): " + format(jiffTotal)}/>
-            <StatColumn color={'#cc3300'} filledPercent={100} label={"Total: " + format(raw)}/>
+        <div className="json-display">{jsonDisplay}</div>
+        <div className="total-display">
+            <StatColumn color={'#990099'} filledPercent={(diffsyncTotal / highestTotal) * 100} label={"Diffsync (Total): " + format(diffsyncTotal)}/>
+            <StatColumn color={'#009933'} filledPercent={(jiffTotal / highestTotal) * 100} label={"Jiff (Total): " + format(jiffTotal)}/>
+            <StatColumn color={'#cc3300'} filledPercent={(raw / highestTotal) * 100} label={"Total: " + format(raw)}/>
         </div>
         <div className="route-button" onClick={clearMetrics}>Clear</div>
     </div>;

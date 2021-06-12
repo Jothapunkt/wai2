@@ -28,3 +28,15 @@ code {
   background-color: #373d48;
 }
 
+.inline-block {
+  display: inline-block;
+  margin: 0.5em;
+}
+
+.json-display {
+  margin: 1em;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 1em;
+  font-family: Consolas;
+}

@@ -7,6 +7,7 @@ import {Notepad} from "../notepad/Notepad";
 import {JiffAlgo} from "../algos/JiffAlgo";
 import {diffsyncDrawID, diffsyncNotepadID} from "../data/dataIDs";
 import {MetricsDashboard} from "../metrics/MetricsDashboard";
+import {Generator} from "../generate/Generator";
 
 export const Routing: React.FC = (): JSX.Element => {
     return <Router>
@@ -18,6 +19,7 @@ export const Routing: React.FC = (): JSX.Element => {
             <Route exact path="/notepad/jiff" render={() => <Notepad algo={new JiffAlgo('notepad')}/>}/>
 
             <Route exact path="/metrics" render={() => <MetricsDashboard/>}/>
+            <Route exact path="/generate" render={() => <Generator/>}/>
 
             <Route path="/">
                 <RouteButton route='/drawingboard/diffsync'>Drawingboard (diffsync)</RouteButton>
@@ -25,6 +27,7 @@ export const Routing: React.FC = (): JSX.Element => {
                 <RouteButton route='/notepad/diffsync'>Notepad (diffsync)</RouteButton>
                 <RouteButton route='/notepad/jiff'>Notepad (Jiff)</RouteButton>
                 <RouteButton route='/metrics'>Metrics</RouteButton>
+                <RouteButton route='/generate'>Generator</RouteButton>
             </Route>
         </Switch>
     </Router>;
