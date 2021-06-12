@@ -44,6 +44,10 @@ export class SocketManager {
                 getMetricsCollection().raw.total += length;
             });
 
+            socket.on("diffsync-message-size", ({length}) => {
+                getMetricsCollection().diffsync.serverSent += length;
+            });
+
             socket.on('jiff-patch', (patch: any) => {
                 if (patch.scenario === 'drawingboard') {
                     jiffDrawingBoard.receivePatch(patch.patch);

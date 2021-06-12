@@ -53,7 +53,7 @@ export const MetricsDashboard: React.FC = (props) => {
         return <div>Fetching...</div>;
     }
 
-    const raw = metrics.raw.total / 2;
+    const raw = metrics.raw.total;
 
     const jiffClient = metrics.jiff.clientsSent;
     const jiffServer = metrics.jiff.serverSent;
