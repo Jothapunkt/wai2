@@ -35,7 +35,7 @@ export const Generator: React.FC = (props) => {
         const pos0 = randomCoordinate();
         const pos1 = randomCoordinate();
 
-        return {operation: 'line', data: {x0: pos0.x, y0: pos0.y, x1: pos1.x, y1: pos1.y}};
+        return {operation: 'line', data: {color: randomColor(), x0: pos0.x, y0: pos0.y, x1: pos1.x, y1: pos1.y}};
     }
 
     function generateFreehand(): DrawingCommand {
@@ -63,7 +63,7 @@ export const Generator: React.FC = (props) => {
             }
         }
 
-        return {operation: 'pen', data: {points, color: randomColor()}}
+        return {operation: 'pen', data: {points, color: randomColor()}};
     }
 
     function generateRandomElement(): DrawingCommand {

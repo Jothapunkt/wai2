@@ -85,7 +85,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
                 setTool('line');
                 setColor(command.data.color);
 
-                rect(command.data.x0, command.data.y0, command.data.x1, command.data.y1, command.data.color);
+                line(command.data.x0, command.data.y0, command.data.x1, command.data.y1, command.data.color);
 
                 setTimeout(resolve, executionInterval);
                 return;
