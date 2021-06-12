@@ -25,6 +25,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
     // Whether commands are being executed
     const [executing, setExecuting] = useState(false);
+    const executionInterval = 250;
 
     // Coordinates the current draw action started at
     const [startY, setStartY] = useState<number | undefined>(0);
@@ -66,7 +67,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
             if (command.operation === 'clear') {
                 clear();
-                setTimeout(resolve, 100);
+                setTimeout(resolve, executionInterval);
                 return;
             }
 
@@ -76,7 +77,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
                 rect(command.data.x0, command.data.y0, command.data.x1, command.data.y1, command.data.color);
 
-                setTimeout(resolve, 100);
+                setTimeout(resolve, executionInterval);
                 return;
             }
 
@@ -86,7 +87,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
 
                 rect(command.data.x0, command.data.y0, command.data.x1, command.data.y1, command.data.color);
 
-                setTimeout(resolve, 100);
+                setTimeout(resolve, executionInterval);
                 return;
             }
 
@@ -98,10 +99,10 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
                     setTimeout(() => {
                         const point = command.data.points[i];
                         paint(point.x, point.y, command.data.color);
-                    }, i * 100);
+                    }, i * executionInterval);
                 }
 
-                setTimeout(resolve,(command.data.points.length + 2) * 100);
+                setTimeout(resolve,(command.data.points.length + 2) * executionInterval);
                 return;
             }
         });

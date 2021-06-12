@@ -10,8 +10,6 @@ export class DiffSync extends SyncAlgo {
         super();
         this.client = new dsyncClient(this.socket, drawID);
 
-        this.socket.onAny(console.log);
-
         this.client.on('connected', () => {
             this.data = this.client.getData();
             this.fireUpdateHandlers(this.data.state);
