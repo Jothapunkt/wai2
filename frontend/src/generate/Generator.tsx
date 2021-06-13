@@ -31,6 +31,12 @@ export const Generator: React.FC = (props) => {
         return {operation: 'rect', data: {color: randomColor(), x0, y0, x1,  y1}};
     }
 
+    function generateFill(): DrawingCommand {
+        const pos = randomCoordinate();
+
+        return {operation: 'fill', data: {color: randomColor(), x: pos.x, y: pos.y}};
+    }
+
     function generateLine(): DrawingCommand {
         const pos0 = randomCoordinate();
         const pos1 = randomCoordinate();
@@ -67,7 +73,7 @@ export const Generator: React.FC = (props) => {
     }
 
     function generateRandomElement(): DrawingCommand {
-        const random = Math.floor(Math.random() * 3);
+        const random = Math.floor(Math.random() * 4);
 
         if (random === 0) {
             return generateLine();
@@ -79,6 +85,10 @@ export const Generator: React.FC = (props) => {
 
         if (random === 2) {
             return generateFreehand();
+        }
+
+        if (random === 3) {
+            return generateFill();
         }
 
         return generateLine();
@@ -94,6 +104,10 @@ export const Generator: React.FC = (props) => {
         }
 
         setLastResult(JSON.stringify(elements));
+    }
+
+    function generateLargeOperations() {
+
     }
 
     return <div>

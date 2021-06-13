@@ -16,10 +16,9 @@ export class JiffAlgo extends SyncAlgo {
                 return;
             }
 
-            const patched = jiff.patch(patch.patch, this.lastState);
-
             // Can't be in one step to avoid desync if the patch fails
             try {
+                const patched = jiff.patch(patch.patch, this.lastState);
                 this.lastState = jiff.clone(patched);
                 this.fireUpdateHandlers(patched);
             } catch (e) {
