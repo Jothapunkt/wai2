@@ -94,6 +94,20 @@ export const Generator: React.FC = (props) => {
         return generateLine();
     }
 
+    function generateLargeElement(): DrawingCommand {
+        const random = Math.floor(Math.random() * 2);
+
+        if (random === 0) {
+            return generateFill();
+        }
+
+        if (random === 1) {
+            return generateRect();
+        }
+
+        return generateRect();
+    }
+
     function generateDrawing() {
         const numberOfElements = 5 + Math.floor(Math.random() * 15);
 
@@ -107,11 +121,33 @@ export const Generator: React.FC = (props) => {
     }
 
     function generateLargeOperations() {
+        const numberOfElements = 5 + Math.floor(Math.random() * 15);
 
+        const elements = [];
+
+        for (let i = 0; i < numberOfElements; ++i) {
+            elements.push(generateLargeElement());
+        }
+
+        setLastResult(JSON.stringify(elements));
+    }
+
+    function generateSmallOperations() {
+        const numberOfElements = 5 + Math.floor(Math.random() * 15);
+
+        const elements = [];
+
+        for (let i = 0; i < numberOfElements; ++i) {
+            elements.push(generateFreehand());
+        }
+
+        setLastResult(JSON.stringify(elements));
     }
 
     return <div>
-        <div className="route-button" onClick={generateDrawing}>Generate Drawing</div>
+        <div className="route-button" onClick={generateDrawing}>Generate Random Drawing</div>
+        <div className="route-button" onClick={generateSmallOperations}>Generate Small Operations</div>
+        <div className="route-button" onClick={generateLargeOperations}>Generate Large Operations</div>
         <div className="json-display">
             {lastResult}
         </div>
