@@ -174,6 +174,7 @@ export const DrawingBoard: React.FC<DrawingBoardProps> = (props: DrawingBoardPro
         }
 
         draw();
+        push();
     }
 
     function paint(x: number, y: number, color: string) {
