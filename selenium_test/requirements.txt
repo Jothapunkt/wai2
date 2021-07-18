@@ -1,2 +1,4 @@
 selenium
 webdriver-manager
+pytest==5.1.1
+pytest-xdist==1.29.0

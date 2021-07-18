@@ -29,6 +29,6 @@ export const Notepad: React.FC<NotepadProps> = (props: NotepadProps) => {
 
     return <div>
         <div>Notepad</div>
-        <textarea ref={textfield} onChange={handleChange}/>
+        <textarea ref={textfield} onChange={handleChange} id="notepad"/>
     </div>;
 }

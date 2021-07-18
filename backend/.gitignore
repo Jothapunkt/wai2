@@ -1,7 +1,0 @@
-# Project exclude paths
-/node_modules/
-/.idea
-
-# Ignore built files
-*.js
-*.map
